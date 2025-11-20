@@ -3,6 +3,7 @@ Reduce unneccessary clutter!
 This extension allows you to take control of the appearance of your Roam Research topbar. You can choose to show or hide default Roam Research buttons in the topbar.
 
 **New:**
+- hide Better Tasks dashboard toggle button
 - hide Roam Portal button
 - also choose to hide buttons for selected third party extensions. Permission has been obtained from all third party developers for the buttons included.
 
@@ -18,6 +19,7 @@ In the topbar you can choose to hide:
 
 Extension buttons you can choose to hide:
 - Yesterday & Tomorrow buttons
+- Better Tasks dashboard button
 - Workspaces button
 - Table of Contents button
 - Reading Time section
