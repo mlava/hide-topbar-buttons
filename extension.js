@@ -1,5 +1,5 @@
 var hmiPF, hmiCal, hmi3DM, hmiPW, hmiHelp, hmiRS = undefined;
-var hmiYTT, hmiWS, hmiTOC, hmiRT, hmiAT, hmiCDMT, hmiBT, hmiRSDMT, hmiRP = undefined;
+var hmiYTT, hmiBetterTasks, hmiWS, hmiTOC, hmiRT, hmiAT, hmiCDMT, hmiBT, hmiRSDMT, hmiRP = undefined;
 let observer = undefined;
 var hashChange = undefined;
 var pf;
@@ -44,6 +44,12 @@ export default {
                     name: "Right Sidebar",
                     description: "Whether to hide the Right Sidebar button",
                     action: { type: "select", items: ["Show on All Platforms", "Hide on Mobile", "Hide on All Platforms"], onChange: (evt) => { setHMI(evt, 6); } },
+                },
+                {
+                    id: "hmi-BetterTasks",
+                    name: "Better Tasks",
+                    description: "Whether to hide the Better Tasks dashboard button",
+                    action: { type: "select", items: ["Show on All Platforms", "Hide on Mobile", "Hide on All Platforms"], onChange: (evt) => { setHMI(evt, 16); } },
                 },
                 {
                     id: "hmi-YTT",
@@ -142,6 +148,11 @@ export default {
             } else {
                 hmiYTT = "Show on All Platforms";
             }
+            if (extensionAPI.settings.get("hmi-BetterTasks")) {
+                hmiBetterTasks = extensionAPI.settings.get("hmi-BetterTasks");
+            } else {
+                hmiBetterTasks = "Show on All Platforms";
+            }
             if (extensionAPI.settings.get("hmi-WS")) {
                 hmiWS = extensionAPI.settings.get("hmi-WS");
             } else {
@@ -217,6 +228,8 @@ export default {
                 hmiRSDMT = evt;
             } else if (i == 15) {
                 hmiRP = evt;
+            } else if (i == 16) {
+                hmiBetterTasks = evt;
             }
             hideDIVs();
         }
@@ -270,13 +283,14 @@ export default {
         hmiBT = false;
         hmiRSDMT = false;
         hmiRP = false;
+        hmiBetterTasks = false;
         hideDIVs();
     }
 }
 
 async function hideDIVs() {
     var pfSib, calendar, calendarSib, threeDot, threeDotSib, width, widthSib, help, helpSib, rightSidebar;
-    var ytt, ws, toc, rt, at, atSib, cdmt, bt, btSib, rsdmt, rp, rpSib;
+    var ytt, betterTasks, betterTasksSib, ws, toc, rt, at, atSib, cdmt, bt, btSib, rsdmt, rp, rpSib;
 
     let topbar = document.querySelectorAll("div.rm-topbar > span.bp3-popover-wrapper");
     if (topbar.length > 0) {
@@ -312,6 +326,8 @@ async function hideDIVs() {
     ws = document.getElementById("workspaces");
     toc = document.getElementById("tableOfContents");
     rt = document.getElementById("rtDiv");
+    betterTasks = document.getElementById("bt-dashboard-button");
+    betterTasksSib = document.getElementById("bt-dashboard-button-spacer");
     cdmt = document.getElementsByClassName("dm-toggle"); // there are three elements to iterate through
     bt = document.getElementById("bionic-button");
     if (bt != undefined) {
@@ -414,6 +430,17 @@ async function hideDIVs() {
         } else {
             if (ytt != undefined) {
                 ytt.style.display = "";
+            }
+        }
+        if (hmiBetterTasks != "Show on All Platforms") {
+            if (betterTasks != undefined) {
+                betterTasks.style.display = "none";
+                betterTasksSib.style.display = "none";
+            }
+        } else {
+            if (betterTasks != undefined) {
+                betterTasks.style.display = "";
+                betterTasksSib.style.display = "";
             }
         }
         if (hmiWS != "Show on All Platforms") {
@@ -607,6 +634,17 @@ async function hideDIVs() {
         } else {
             if (ytt != undefined) {
                 ytt.style.display = "";
+            }
+        }
+        if (hmiBetterTasks == "Hide on All Platforms") {
+            if (betterTasks != undefined) {
+                betterTasks.style.display = "none";
+                betterTasksSib.style.display = "none";
+            }
+        } else {
+            if (betterTasks != undefined) {
+                betterTasks.style.display = "";
+                betterTasksSib.style.display = "";
             }
         }
         if (hmiWS == "Hide on All Platforms") {
